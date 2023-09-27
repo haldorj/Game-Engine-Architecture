@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Flipper : MonoBehaviour
 {
-    [SerializeField] private float hitStrength = 80000f;
+    [SerializeField] private float hitStrength = 10000f;
     [SerializeField] private float dampening = 250f;
     
     [SerializeField] private HingeJoint _hingeJointLeft;
@@ -36,13 +36,11 @@ public class Flipper : MonoBehaviour
 
     void OnLeftFlipper(InputValue value)
     {
-        Debug.Log("L");
         _leftFlipperPressed = value.isPressed;
     }
 
     void OnRightFlipper(InputValue value)
     {
-        Debug.Log("R");
         _rightFlipperPressed = value.isPressed;
     }
 }
