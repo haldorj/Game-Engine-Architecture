@@ -13,18 +13,28 @@ public class Ball : MonoBehaviour
     private Vector3 _startPos;
     
     [SerializeField]private TextMeshProUGUI textMeshProUGUI;
+    [SerializeField]private TextMeshProUGUI textMeshProTimer;
     [SerializeField]private int score;
+    
+    private float _seconds;
+    private int _minutes;
 
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _startPos = transform.position;
+        ResetTimerUI();
     }
 
     private void Update()
     {
         if (textMeshProUGUI)
-            textMeshProUGUI.text = "score:" + score.ToString();
+            textMeshProUGUI.text = "score: " + score.ToString();
+
+        if (score > 0)
+            UpdateTimerUI(Time.deltaTime);
+        else
+            ResetTimerUI();
     }
 
     public void Launch()
@@ -54,5 +64,26 @@ public class Ball : MonoBehaviour
             transform.position = _startPos;
             score = 0;
         }
+    }
+    
+    public void UpdateTimerUI(float dt)
+    {
+        if (textMeshProTimer)
+        {
+            _seconds += dt;
+            textMeshProTimer.text = "Time: " + _minutes + ":" + (int)_seconds;
+            if (_seconds >= 60)
+            {
+                _minutes++;
+                _seconds = 0;
+            }
+        }
+    }
+
+    private void ResetTimerUI()
+    {
+        _seconds = 0;
+        _minutes = 0;
+        textMeshProTimer.text = "Time: 0:0";
     }
 }

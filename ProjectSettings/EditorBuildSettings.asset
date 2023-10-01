@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/VehicleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/Pinball/Start Screen.unity
+    guid: f85fa6e1766af674d9e3ba990d25b528
+  - enabled: 1
+    path: Assets/Scenes/Pinball/Pinball.unity
+    guid: 493e2bac292487e41b813f6ce1d9200e
   m_configObjects: {}
