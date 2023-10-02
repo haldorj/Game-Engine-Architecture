@@ -1,0 +1,27 @@
+#pragma kernel generate_noise
+
+#include "Includes/FastNoiseLite.hlsl"
+#include "Includes/MetricsCompute.compute"
+
+RWStructuredBuffer<float> weights;
+
+float amplitude;
+float frequency;
+int octaves;
+float ground_percent;
+
+
+[numthreads(num_threads, num_threads, num_threads)]
+void generate_noise(uint3 id : SV_DispatchThreadID)
+{
+    fnl_state noise = fnlCreateState();
+    noise.noise_type = FNL_NOISE_OPENSIMPLEX2;
+    noise.fractal_type = FNL_FRACTAL_RIDGED;
+    noise.frequency = frequency;
+    noise.octaves = octaves;
+
+    float3 pos = id;
+    const float ground = -pos.y + (ground_percent * chunk_size);
+    const float noise_value = ground + fnlGetNoise3D(noise, pos.x, pos.y, pos.z) * amplitude;
+    weights[index_from_coord(id.x, id.y, id.z)] = noise_value;
+}

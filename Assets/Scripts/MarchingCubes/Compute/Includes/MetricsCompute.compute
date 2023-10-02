@@ -1,0 +1,8 @@
+﻿static const uint num_threads = 8;
+
+int chunk_size;
+
+int index_from_coord(const int x, const int y, const int z)
+{
+    return x + chunk_size * (y + chunk_size * z);
+}
