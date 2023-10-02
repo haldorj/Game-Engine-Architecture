@@ -12,10 +12,12 @@ public class NoiseGenerator : MonoBehaviour
     private ComputeBuffer _weightsBuffer;
     public ComputeShader noiseShader;
     
-    [SerializeField] float amplitude = 10;
-    [SerializeField] float frequency = 0.002f;
-    [SerializeField] int octaves = 8;
-    [SerializeField, Range(0f, 1f)] float groundPercent = 0.2f;
+    [SerializeField] private float amplitude = 10;
+    [SerializeField] private float frequency = 0.002f;
+    [SerializeField] private int octaves = 8;
+    [SerializeField] private int hardFloor = 2;
+    [SerializeField] private int terraceHeight = 6;
+    [SerializeField, Range(0f, 1f)] private float groundPercent = 0.2f;
     
     
     private static readonly int Weights = Shader.PropertyToID("weights");
@@ -24,6 +26,8 @@ public class NoiseGenerator : MonoBehaviour
     private static readonly int Frequency = Shader.PropertyToID("frequency");
     private static readonly int Octaves = Shader.PropertyToID("octaves");
     private static readonly int GroundPercent = Shader.PropertyToID("ground_percent");
+    private static readonly int HardFloor = Shader.PropertyToID("hard_floor_y");
+    private static readonly int TerraceHeight = Shader.PropertyToID("terrace_height");
 
     private void Awake() 
     {
@@ -48,9 +52,11 @@ public class NoiseGenerator : MonoBehaviour
         noiseShader.SetFloat(Frequency, frequency);
         noiseShader.SetInt(Octaves, octaves);
         noiseShader.SetFloat(GroundPercent, groundPercent);
+        noiseShader.SetInt(HardFloor, hardFloor);
+        noiseShader.SetInt(TerraceHeight, terraceHeight);
         
-        // Dispatch shader, with one kernel (index 0), and 1 workgroup for each dimension
-        // to create a grid of GridMetrics.PointsPerChunk^3
+        // Dispatch shader, with one kernel (index 0), and (GridMetrics.PointsPerChunk/GridMetrics.NumThreads)
+        // workgroups for each dimension to create 3d a grid
         noiseShader.Dispatch(
             0, 
             GridMetrics.PointsPerChunk / GridMetrics.NumThreads, 

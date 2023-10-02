@@ -9,7 +9,8 @@ float amplitude;
 float frequency;
 int octaves;
 float ground_percent;
-
+int hard_floor_y;
+int terrace_height;
 
 [numthreads(num_threads, num_threads, num_threads)]
 void generate_noise(uint3 id : SV_DispatchThreadID)
@@ -21,7 +22,12 @@ void generate_noise(uint3 id : SV_DispatchThreadID)
     noise.octaves = octaves;
 
     float3 pos = id;
+    const float hard_floor_influence = saturate((hard_floor_y - pos.y)*3)*40; 
+    const float terracing = frac(pos.y / terrace_height) * terrace_height;
     const float ground = -pos.y + (ground_percent * chunk_size);
-    const float noise_value = ground + fnlGetNoise3D(noise, pos.x, pos.y, pos.z) * amplitude;
+    const float noise_value = ground +
+                    fnlGetNoise3D(noise, pos.x, pos.y, pos.z) * amplitude +
+                    terracing +
+                    hard_floor_influence;
     weights[index_from_coord(id.x, id.y, id.z)] = noise_value;
 }
