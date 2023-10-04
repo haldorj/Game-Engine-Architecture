@@ -35,9 +35,9 @@ void update_weights(uint3 id : SV_DispatchThreadID)
         return;
     }
 
-    if (distance(id, hit_position) <= brush_size)
+    if ( distance((float3(id) / (chunk_size - 1) * scale), hit_position ) <= brush_size )
     {
-        weights[index_from_coord(id.x, id.y, id.z)] += terraform_strength;
+        weights[index_from_coord( id.x, id.y, id.z )] += terraform_strength;
     }
 }
 
@@ -71,6 +71,7 @@ void march(uint3 id : SV_DispatchThreadID)
     if (cube_values[7] < iso_level) cubeIndex |= 128;
 
     int edges[] = triTable[cubeIndex];
+    
 
     for (int i = 0; edges[i] != -1; i += 3)
     {
@@ -86,9 +87,9 @@ void march(uint3 id : SV_DispatchThreadID)
         int e20 = edgeConnections[edges[i + 2]][0];
         int e21 = edgeConnections[edges[i + 2]][1];
         Triangle tri;
-        tri.a = interp(cornerOffsets[e00], cube_values[e00], cornerOffsets[e01], cube_values[e01]) + id;
-        tri.b = interp(cornerOffsets[e10], cube_values[e10], cornerOffsets[e11], cube_values[e11]) + id;
-        tri.c = interp(cornerOffsets[e20], cube_values[e20], cornerOffsets[e21], cube_values[e21]) + id;
+        tri.a = (interp(cornerOffsets[e00], cube_values[e00], cornerOffsets[e01], cube_values[e01]) + id) / (chunk_size - 1) * scale;
+        tri.b = (interp(cornerOffsets[e10], cube_values[e10], cornerOffsets[e11], cube_values[e11]) + id) / (chunk_size - 1) * scale;
+        tri.c = (interp(cornerOffsets[e20], cube_values[e20], cornerOffsets[e21], cube_values[e21]) + id) / (chunk_size - 1) * scale;
         triangles.Append(tri);
     }
 

@@ -1,5 +1,6 @@
 ﻿static const uint num_threads = 8;
 
+int scale;
 int chunk_size;
 
 int index_from_coord(const int x, const int y, const int z)

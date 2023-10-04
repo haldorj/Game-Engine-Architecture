@@ -5,6 +5,27 @@
 
 public static class GridMetrics 
 {
-    public const int NumThreads = 8;
-    public const int PointsPerChunk = 32;
+    private const int NumThreads = 8;
+    public const int Scale = 32;
+    
+    public const int GroundLevel = Scale / 2;
+    
+    // preset values of LODs (should be divisible by 8)
+    private static readonly int[] LoDs = {
+        8,
+        16,
+        24,
+        32,
+        40
+    };
+    
+    // Point density per chunk
+    public static int PointsPerChunk(int lod) {
+        return LoDs[lod];
+    }
+
+    // number of threadgroups
+    public static int ThreadGroups(int lod) {
+        return LoDs[lod] / NumThreads;
+    }
 }
