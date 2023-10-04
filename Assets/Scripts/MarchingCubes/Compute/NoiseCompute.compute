@@ -22,7 +22,7 @@ void generate_noise(uint3 id : SV_DispatchThreadID)
     noise.frequency = frequency;
     noise.octaves = octaves;
     
-    float3 pos = float3(id.x, id.y, id.z) / (float3(chunk_size - 1, chunk_size - 1, chunk_size - 1)) * scale;
+    float3 pos = float3(id.x, id.y, id.z) / float3(chunk_size - 1, chunk_size - 1, chunk_size - 1) * scale;
     
     const float hard_floor_influence = saturate((hard_floor_y - pos.y)*3)*40; 
     const float terracing = frac(pos.y / terrace_height) * terrace_height;

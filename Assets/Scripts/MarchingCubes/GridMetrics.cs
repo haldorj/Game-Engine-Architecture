@@ -5,7 +5,7 @@
 
 public static class GridMetrics 
 {
-    private const int NumThreads = 8;
+    public const int NumThreads = 8;
     public const int Scale = 32;
     
     public const int GroundLevel = Scale / 2;
@@ -18,6 +18,8 @@ public static class GridMetrics
         32,
         40
     };
+    
+    public static readonly int LastLod = LoDs.Length - 1;
     
     // Point density per chunk
     public static int PointsPerChunk(int lod) {

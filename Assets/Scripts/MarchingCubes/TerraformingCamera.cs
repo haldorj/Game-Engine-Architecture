@@ -26,9 +26,7 @@ public class TerraformingCamera : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     private void Terraform(bool add)
     {
-        RaycastHit hit;
-
-        if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out hit, 1000))
+        if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out var hit, 1000))
         {
             Chunk hitChunk = hit.collider.gameObject.GetComponent<Chunk>();
 
@@ -39,7 +37,8 @@ public class TerraformingCamera : MonoBehaviour
         }
     }
     
-    private void OnDrawGizmos() {
+    private void OnDrawGizmos() 
+    {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(_hitPoint, brushSize);
     }

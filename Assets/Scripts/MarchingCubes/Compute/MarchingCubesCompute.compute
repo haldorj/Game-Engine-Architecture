@@ -1,77 +1,69 @@
 ﻿#pragma kernel march
 #pragma kernel update_weights
 
-
 #include "Includes/MarchingTable.hlsl"
 #include "Includes/MetricsCompute.compute"
 
-
 RWStructuredBuffer<float> weights;
-
-float iso_level;
 
 float3 hit_position;
 float brush_size;
 float terraform_strength;
 
-struct Triangle {
+float iso_level;
+
+float lod_scale_factor;
+
+int lod_size;
+
+struct Triangle
+{
     float3 a, b, c;
 };
 
 AppendStructuredBuffer<Triangle> triangles;
 
 float3 interp(const float3 edge_vertex1, const float value_at_vertex1,
-    const float3 edge_vertex2, const float value_at_vertex2)
+              const float3 edge_vertex2, const float value_at_vertex2)
 {
-    return (edge_vertex1 + (iso_level - value_at_vertex1) * (edge_vertex2 - edge_vertex1) /
-        (value_at_vertex2 - value_at_vertex1));
+    return edge_vertex1 + (iso_level - value_at_vertex1) * (edge_vertex2 - edge_vertex1) /
+        (value_at_vertex2 - value_at_vertex1);
 }
 
-[numthreads(num_threads, num_threads, num_threads)]
-void update_weights(uint3 id : SV_DispatchThreadID) 
-{
-    if (id.x >= chunk_size - 1 || id.y >= chunk_size - 1 || id.z >= chunk_size - 1)
-    {
-        return;
-    }
-
-    if ( distance((float3(id) / (chunk_size - 1) * scale), hit_position ) <= brush_size )
-    {
-        weights[index_from_coord( id.x, id.y, id.z )] += terraform_strength;
-    }
-}
 
 [numthreads(num_threads, num_threads, num_threads)]
 void march(uint3 id : SV_DispatchThreadID)
 {
-    if (id.x >= chunk_size - 1 || id.y >= chunk_size - 1 || id.z >= chunk_size - 1)
+    if (id.x >= lod_size - 1 || id.y >= lod_size - 1 || id.z >= lod_size - 1)
     {
         return;
     }
 
+    float3 sample_pos = id * lod_scale_factor;
+    const float unit = 1 * lod_scale_factor;
+
     const float cube_values[8] = {
-       weights[index_from_coord(id.x, id.y, id.z + 1)],
-       weights[index_from_coord(id.x + 1, id.y, id.z + 1)],
-       weights[index_from_coord(id.x + 1, id.y, id.z)],
-       weights[index_from_coord(id.x, id.y, id.z)],
-       weights[index_from_coord(id.x, id.y + 1, id.z + 1)],
-       weights[index_from_coord(id.x + 1, id.y + 1, id.z + 1)],
-       weights[index_from_coord(id.x + 1, id.y + 1, id.z)],
-       weights[index_from_coord(id.x, id.y + 1, id.z)]
+       weights[index_from_coord(sample_pos.x, sample_pos.y, sample_pos.z + unit)],
+       weights[index_from_coord(sample_pos.x + unit, sample_pos.y, sample_pos.z + unit)],
+       weights[index_from_coord(sample_pos.x + unit, sample_pos.y, sample_pos.z)],
+       weights[index_from_coord(sample_pos.x, sample_pos.y, sample_pos.z)],
+       weights[index_from_coord(sample_pos.x, sample_pos.y + unit, sample_pos.z + unit)],
+       weights[index_from_coord(sample_pos.x + unit, sample_pos.y + unit, sample_pos.z + unit)],
+       weights[index_from_coord(sample_pos.x + unit, sample_pos.y + unit, sample_pos.z)],
+       weights[index_from_coord(sample_pos.x, sample_pos.y + unit, sample_pos.z)]
     };
 
-    int cubeIndex = 0;
-    if (cube_values[0] < iso_level) cubeIndex |= 1;
-    if (cube_values[1] < iso_level) cubeIndex |= 2;
-    if (cube_values[2] < iso_level) cubeIndex |= 4;
-    if (cube_values[3] < iso_level) cubeIndex |= 8;
-    if (cube_values[4] < iso_level) cubeIndex |= 16;
-    if (cube_values[5] < iso_level) cubeIndex |= 32;
-    if (cube_values[6] < iso_level) cubeIndex |= 64;
-    if (cube_values[7] < iso_level) cubeIndex |= 128;
+    int cube_index = 0;
+    if (cube_values[0] < iso_level) cube_index |= 1;
+    if (cube_values[1] < iso_level) cube_index |= 2;
+    if (cube_values[2] < iso_level) cube_index |= 4;
+    if (cube_values[3] < iso_level) cube_index |= 8;
+    if (cube_values[4] < iso_level) cube_index |= 16;
+    if (cube_values[5] < iso_level) cube_index |= 32;
+    if (cube_values[6] < iso_level) cube_index |= 64;
+    if (cube_values[7] < iso_level) cube_index |= 128;
 
-    int edges[] = triTable[cubeIndex];
-    
+    int edges[] = triTable[cube_index];
 
     for (int i = 0; edges[i] != -1; i += 3)
     {
@@ -86,11 +78,33 @@ void march(uint3 id : SV_DispatchThreadID)
         // Third edge lies between vertex e20 and vertex e21
         int e20 = edgeConnections[edges[i + 2]][0];
         int e21 = edgeConnections[edges[i + 2]][1];
+        
         Triangle tri;
-        tri.a = (interp(cornerOffsets[e00], cube_values[e00], cornerOffsets[e01], cube_values[e01]) + id) / (chunk_size - 1) * scale;
-        tri.b = (interp(cornerOffsets[e10], cube_values[e10], cornerOffsets[e11], cube_values[e11]) + id) / (chunk_size - 1) * scale;
-        tri.c = (interp(cornerOffsets[e20], cube_values[e20], cornerOffsets[e21], cube_values[e21]) + id) / (chunk_size - 1) * scale;
+        tri.a = (interp(cornerOffsets[e00], cube_values[e00],
+            cornerOffsets[e01], cube_values[e01]) + id) / (lod_size - 1) * scale;
+        
+        tri.b = (interp(cornerOffsets[e10], cube_values[e10],
+            cornerOffsets[e11], cube_values[e11]) + id) / (lod_size - 1) * scale;
+        
+        tri.c = (interp(cornerOffsets[e20], cube_values[e20],
+            cornerOffsets[e21], cube_values[e21]) + id) / (lod_size - 1) * scale;
+        
         triangles.Append(tri);
     }
 
+}
+
+
+[numthreads(num_threads, num_threads, num_threads)]
+void update_weights(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= chunk_size - 1 || id.y >= chunk_size - 1 || id.z >= chunk_size - 1)
+    {
+        return;
+    }
+
+    if (distance((float3(id) / (chunk_size - 1) * scale), hit_position) <= brush_size)
+    {
+        weights[index_from_coord(id.x, id.y, id.z)] += terraform_strength;
+    }
 }

@@ -45,8 +45,7 @@ public class NoiseGenerator : MonoBehaviour
         
         // Communicate between GPU and CPU (compute shader to C# script)
         noiseShader.SetBuffer(0, Weights, _weightsBuffer);
-
-        noiseShader.SetInt(Scale, GridMetrics.Scale);
+        
         noiseShader.SetInt(ChunkSize, GridMetrics.PointsPerChunk(lod));
         noiseShader.SetFloat(Amplitude, amplitude);
         noiseShader.SetFloat(Frequency, frequency);
@@ -54,6 +53,7 @@ public class NoiseGenerator : MonoBehaviour
         noiseShader.SetFloat(GroundPercent, groundPercent);
         noiseShader.SetInt(HardFloor, hardFloor);
         noiseShader.SetInt(TerraceHeight, terraceHeight);
+        noiseShader.SetInt(Scale, GridMetrics.Scale);
         noiseShader.SetInt(GroundLevel, GridMetrics.GroundLevel);
         
         // Dispatch shader, with one kernel (index 0), and (GridMetrics.PointsPerChunk/GridMetrics.NumThreads)
