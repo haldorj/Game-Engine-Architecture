@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,6 +9,9 @@ public class Chunk : MonoBehaviour
 {
     public ComputeShader marchingShader;
     public MeshFilter meshFilter;
+    public MeshCollider meshCollider;
+
+    private Mesh _mesh;
 
     // Buffers to transfer data between the CPU and the GPU
     private ComputeBuffer _trianglesBuffer;
@@ -16,14 +21,20 @@ public class Chunk : MonoBehaviour
     private float[] _weights;
 
     [FormerlySerializedAs("NoiseGenerator")] public NoiseGenerator noiseGenerator;
+    
     private static readonly int Triangles = Shader.PropertyToID("triangles");
     private static readonly int Weights = Shader.PropertyToID("weights");
     private static readonly int ChunkSize = Shader.PropertyToID("chunk_size");
     private static readonly int IsoLevel = Shader.PropertyToID("iso_level");
+    
+    private static readonly int HitPosition = Shader.PropertyToID("hit_position");
+    private static readonly int BrushSize = Shader.PropertyToID("brush_size");
+    private static readonly int TerraformStrength = Shader.PropertyToID("terraform_strength");
 
     private void Awake() 
     {
         meshFilter = GetComponent<MeshFilter>();
+        meshCollider = GetComponent<MeshCollider>();
         CreateBuffers();
     }
 
@@ -43,11 +54,17 @@ public class Chunk : MonoBehaviour
 
     void Start() {
         _weights = noiseGenerator.GetNoise();
-
-        meshFilter.sharedMesh = ConstructMesh();
+        
+        _mesh = new Mesh();
+        
+        //meshFilter.sharedMesh = ConstructMesh();
+        UpdateMesh();
     }
 
-    Mesh ConstructMesh() {
+    Mesh ConstructMesh()
+    {
+        int kernel = marchingShader.FindKernel("march");
+        
         marchingShader.SetBuffer(0, Triangles, _trianglesBuffer);
         marchingShader.SetBuffer(0, Weights, _weightsBuffer);
 
@@ -57,7 +74,7 @@ public class Chunk : MonoBehaviour
         _weightsBuffer.SetData(_weights);
         _trianglesBuffer.SetCounterValue(0);
         
-        marchingShader.Dispatch(0, 
+        marchingShader.Dispatch(kernel, 
             GridMetrics.PointsPerChunk / GridMetrics.NumThreads, 
             GridMetrics.PointsPerChunk / GridMetrics.NumThreads, 
             GridMetrics.PointsPerChunk / GridMetrics.NumThreads);
@@ -66,6 +83,30 @@ public class Chunk : MonoBehaviour
         _trianglesBuffer.GetData(triangles);
 
         return CreateMeshFromTriangles(triangles);
+    }
+    
+    public void EditWeights(Vector3 hitPosition, float brushSize, bool add)
+    {
+        // We are using the marching compute shader to update the weights for the mesh (terraforming).
+        // We are using a new kernel (method/function) in our compute shader to do this.
+        // With the .FindKernel("name") method we can find the index of the kernel in our compute shader.
+        int kernel = marchingShader.FindKernel("update_weights");
+        
+        _weightsBuffer.SetData(_weights);
+        marchingShader.SetBuffer(kernel, Weights, _weightsBuffer);
+        
+        marchingShader.SetInt(ChunkSize, GridMetrics.PointsPerChunk);
+        marchingShader.SetVector(HitPosition, hitPosition);
+        marchingShader.SetFloat(BrushSize, brushSize);
+        marchingShader.SetFloat(TerraformStrength, add ? 1f : -1f);
+        
+        marchingShader.Dispatch(kernel, GridMetrics.PointsPerChunk / GridMetrics.NumThreads,
+            GridMetrics.PointsPerChunk / GridMetrics.NumThreads,
+            GridMetrics.PointsPerChunk / GridMetrics.NumThreads);
+
+        _weightsBuffer.GetData(_weights);
+
+        UpdateMesh();
     }
 
     int ReadTriangleCount() {
@@ -93,13 +134,26 @@ public class Chunk : MonoBehaviour
             tris[startIndex + 2] = startIndex + 2;
         }
 
-        Mesh mesh = new Mesh();
-        mesh.vertices = verts;
-        mesh.triangles = tris;
-        mesh.RecalculateNormals();
-        return mesh;
+        // Mesh mesh = new Mesh();
+        // mesh.vertices = verts;
+        // mesh.triangles = tris;
+        // mesh.RecalculateNormals();
+        
+        _mesh.Clear();
+        _mesh.vertices = verts;
+        _mesh.triangles = tris;
+        _mesh.RecalculateNormals();
+        
+        return _mesh;
     }
-    
+
+    private void UpdateMesh()
+    {
+        Mesh mesh = ConstructMesh();
+        meshFilter.sharedMesh = mesh;
+        meshCollider.sharedMesh = mesh;
+    }
+
     void CreateBuffers() 
     {
         _trianglesBuffer = new ComputeBuffer(
@@ -124,6 +178,7 @@ public class Chunk : MonoBehaviour
     
     private void OnDrawGizmos() 
     {
+        /*
         if (_weights == null || _weights.Length == 0) 
         {
             return;
@@ -141,5 +196,6 @@ public class Chunk : MonoBehaviour
                 }
             }
         }
+        */
     }
 }

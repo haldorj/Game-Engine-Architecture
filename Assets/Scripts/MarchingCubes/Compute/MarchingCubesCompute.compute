@@ -1,4 +1,5 @@
-﻿#pragma kernel March
+﻿#pragma kernel march
+#pragma kernel update_weights
 
 
 #include "Includes/MarchingTable.hlsl"
@@ -8,6 +9,10 @@
 RWStructuredBuffer<float> weights;
 
 float iso_level;
+
+float3 hit_position;
+float brush_size;
+float terraform_strength;
 
 struct Triangle {
     float3 a, b, c;
@@ -22,9 +27,22 @@ float3 interp(const float3 edge_vertex1, const float value_at_vertex1,
         (value_at_vertex2 - value_at_vertex1));
 }
 
+[numthreads(num_threads, num_threads, num_threads)]
+void update_weights(uint3 id : SV_DispatchThreadID) 
+{
+    if (id.x >= chunk_size - 1 || id.y >= chunk_size - 1 || id.z >= chunk_size - 1)
+    {
+        return;
+    }
+
+    if (distance(id, hit_position) <= brush_size)
+    {
+        weights[index_from_coord(id.x, id.y, id.z)] += terraform_strength;
+    }
+}
 
 [numthreads(num_threads, num_threads, num_threads)]
-void March(uint3 id : SV_DispatchThreadID)
+void march(uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= chunk_size - 1 || id.y >= chunk_size - 1 || id.z >= chunk_size - 1)
     {
