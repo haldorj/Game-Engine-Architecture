@@ -13,6 +13,9 @@ int hard_floor_y;
 int terrace_height;
 int ground_level;
 
+int initial_x;
+int initial_y;
+
 [numthreads(num_threads, num_threads, num_threads)]
 void generate_noise(uint3 id : SV_DispatchThreadID)
 {
@@ -28,7 +31,7 @@ void generate_noise(uint3 id : SV_DispatchThreadID)
     const float terracing = frac(pos.y / terrace_height) * terrace_height;
     const float ground = -pos.y + ground_percent * ground_level;
     const float noise_value = ground +
-                    fnlGetNoise3D(noise, pos.x, pos.y, pos.z) * amplitude +
+                    fnlGetNoise3D(noise, pos.x * initial_x, pos.y, pos.z * initial_y) * amplitude +
                     terracing +
                     hard_floor_influence;
     weights[index_from_coord(id.x, id.y, id.z)] = noise_value;
