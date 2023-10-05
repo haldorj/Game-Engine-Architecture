@@ -20,6 +20,9 @@ public class Chunk : MonoBehaviour
     
     [Range(0, 4)]
     public int lod;
+
+    public int _initialX;
+    public int _initialY;
     
     private struct Triangle 
     {

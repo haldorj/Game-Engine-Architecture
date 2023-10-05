@@ -28,11 +28,12 @@ public class TerraformingCamera : MonoBehaviour
     {
         if (Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out var hit, 1000))
         {
+            if (!hit.collider || !hit.collider.gameObject.GetComponent<Chunk>()) return;
+            
             Chunk hitChunk = hit.collider.gameObject.GetComponent<Chunk>();
 
             _hitPoint = hit.point;
-            // print(_hitPoint.ToString());
-            
+
             hitChunk.EditWeights(_hitPoint, brushSize, add);
         }
     }
