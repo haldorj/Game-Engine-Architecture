@@ -1126,7 +1126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 20
-  minSpeed: 0.5
+  minSpeed: 1
   speedChangeAmt: 0.2
   turnSpeed: 2
   riseSpeed: 10
