@@ -6,7 +6,7 @@
 public static class GridMetrics 
 {
     public const int NumThreads = 8;
-    public const int Scale = 32;
+    public const int Scale = 32 * 3;
     
     public const int GroundLevel = Scale / 2;
     
@@ -16,7 +16,8 @@ public static class GridMetrics
         16,
         24,
         32,
-        40
+        40,
+        56
     };
     
     public static readonly int LastLod = LoDs.Length - 1;

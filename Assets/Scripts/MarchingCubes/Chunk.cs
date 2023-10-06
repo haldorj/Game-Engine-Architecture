@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class Chunk : MonoBehaviour
 
     public NoiseGenerator noiseGenerator;
     
-    [Range(0, 4)]
+    [Range(0, 5)]
     public int lod;
 
     public int _initialX;
@@ -33,7 +34,7 @@ public class Chunk : MonoBehaviour
         // Every triangle is the size of 3 * 3 floats (three points of xyz coords).
         public static int SizeOf => sizeof(float) * 3 * 3;
     }
-    
+
     private void Start() 
     {
         Create();

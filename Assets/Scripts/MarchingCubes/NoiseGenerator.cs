@@ -14,27 +14,15 @@ public class NoiseGenerator : MonoBehaviour
     
     public ComputeShader noiseShader;
     
+    public int initialX;
+    public int initialY;
+    
     [SerializeField] private float amplitude = 10;
     [SerializeField] private float frequency = 0.002f;
     [SerializeField] private int octaves = 8;
     [SerializeField] private int hardFloor = 2;
     [SerializeField] private int terraceHeight = 6;
     [SerializeField, Range(0f, 1f)] private float groundPercent = 0.2f;
-
-    #region Shader properties
-
-    private static readonly int Weights = Shader.PropertyToID("weights");
-    private static readonly int ChunkSize = Shader.PropertyToID("chunk_size");
-    private static readonly int Amplitude = Shader.PropertyToID("amplitude");
-    private static readonly int Frequency = Shader.PropertyToID("frequency");
-    private static readonly int Octaves = Shader.PropertyToID("octaves");
-    private static readonly int GroundPercent = Shader.PropertyToID("ground_percent");
-    private static readonly int HardFloor = Shader.PropertyToID("hard_floor_y");
-    private static readonly int TerraceHeight = Shader.PropertyToID("terrace_height");
-    private static readonly int Scale = Shader.PropertyToID("scale");
-    private static readonly int GroundLevel = Shader.PropertyToID("ground_level");
-
-    #endregion
     
     public float[] GetNoise(int lod)
     {
@@ -44,17 +32,19 @@ public class NoiseGenerator : MonoBehaviour
             new float[GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod)];
         
         // Communicate between GPU and CPU (compute shader to C# script)
-        noiseShader.SetBuffer(0, Weights, _weightsBuffer);
+        noiseShader.SetBuffer(0, $"weights", _weightsBuffer);
         
-        noiseShader.SetInt(ChunkSize, GridMetrics.PointsPerChunk(lod));
-        noiseShader.SetFloat(Amplitude, amplitude);
-        noiseShader.SetFloat(Frequency, frequency);
-        noiseShader.SetInt(Octaves, octaves);
-        noiseShader.SetFloat(GroundPercent, groundPercent);
-        noiseShader.SetInt(HardFloor, hardFloor);
-        noiseShader.SetInt(TerraceHeight, terraceHeight);
-        noiseShader.SetInt(Scale, GridMetrics.Scale);
-        noiseShader.SetInt(GroundLevel, GridMetrics.GroundLevel);
+        noiseShader.SetInt($"chunk_size", GridMetrics.PointsPerChunk(lod));
+        noiseShader.SetFloat($"amplitude", amplitude);
+        noiseShader.SetFloat($"frequency", frequency);
+        noiseShader.SetInt($"octaves", octaves);
+        noiseShader.SetFloat($"ground_percent", groundPercent);
+        noiseShader.SetInt($"hard_floor", hardFloor);
+        noiseShader.SetInt($"terrace_height", terraceHeight);
+        noiseShader.SetInt($"scale", GridMetrics.Scale);
+        noiseShader.SetInt($"ground_level", GridMetrics.GroundLevel);
+        noiseShader.SetInt($"initial_x", initialX);
+        noiseShader.SetInt($"initial_y", initialY);
         
         // Dispatch shader, with one kernel (index 0), and (GridMetrics.PointsPerChunk/GridMetrics.NumThreads)
         // workgroups for each dimension to create 3d a grid
