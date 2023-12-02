@@ -5,6 +5,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+// Used to simulate movement of a NPC (jellyfish) along a spline path
+
 public class BSplineCurve : MonoBehaviour
 {
     [SerializeField] public List<Vector3> controlPoints = new(); // The controlPoints (c)

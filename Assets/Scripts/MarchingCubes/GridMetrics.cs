@@ -6,7 +6,7 @@
 public static class GridMetrics 
 {
     public const int NumThreads = 8;
-    public const int Scale = 32 * 3;
+    public const int Scale = 32;
     
     public const int GroundLevel = Scale / 2;
     
@@ -17,7 +17,7 @@ public static class GridMetrics
         24,
         32,
         40,
-        56
+        48
     };
     
     public static readonly int LastLod = LoDs.Length - 1;
@@ -27,7 +27,7 @@ public static class GridMetrics
         return LoDs[lod];
     }
 
-    // number of threadgroups
+    // number of thread-groups
     public static int ThreadGroups(int lod) {
         return LoDs[lod] / NumThreads;
     }

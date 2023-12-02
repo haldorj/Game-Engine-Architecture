@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Chunk : MonoBehaviour
 {
+    // This class is responsible for generating and creating the terrain mesh
+    
     public ComputeShader marchingShader;
     
     public MeshFilter meshFilter;
@@ -21,9 +24,6 @@ public class Chunk : MonoBehaviour
     
     [Range(0, 5)]
     public int lod;
-
-    public int _initialX;
-    public int _initialY;
     
     private struct Triangle 
     {

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    // Follow Camera for submarine
+    
     public Transform target;
     public float moveSmoothing;
     public float rotationSmoothing;

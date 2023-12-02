@@ -4,6 +4,8 @@
 #include "Includes/MarchingTable.hlsl"
 #include "Includes/MetricsCompute.compute"
 
+// Marching cubes compute shader
+
 RWStructuredBuffer<float> weights;
 
 float3 hit_position;

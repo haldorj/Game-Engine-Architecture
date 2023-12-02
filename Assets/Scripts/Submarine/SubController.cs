@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class SubController : MonoBehaviour
 {
+    // Controller class which simulates submarine movement:
+    // Moving, Turning, Rising/Sinking, Stabilizing (will always default back to an upright position)
+    
     private Rigidbody _rigidbody;
     private float _currentSpeed;
     public float maxSpeed;

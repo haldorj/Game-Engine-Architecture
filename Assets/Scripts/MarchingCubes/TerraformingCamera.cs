@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class TerraformingCamera : MonoBehaviour
 {
+    // Adds ability to edit the weights of the grid
+    // effectively making it possible to terraform the terrain 
+    
     private Vector3 _hitPoint;
     private Camera _camera;
 
