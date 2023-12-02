@@ -21,12 +21,13 @@ int initial_z;
 void generate_noise(uint3 id : SV_DispatchThreadID)
 {
     fnl_state noise = fnlCreateState();
-    noise.noise_type = FNL_NOISE_OPENSIMPLEX2S;
+    noise.noise_type = FNL_NOISE_OPENSIMPLEX2;
     noise.fractal_type = FNL_FRACTAL_RIDGED;
     noise.frequency = frequency;
     noise.octaves = octaves;
     
     double3 pos = double3(id.x, id.y, id.z) / double3(chunk_size - 1, chunk_size - 1, chunk_size - 1) * scale;
+    
     pos.x += initial_x * scale;
     pos.z += initial_z * scale;
     

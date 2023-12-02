@@ -18,7 +18,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6687377390141924978
 Transform:
@@ -51,7 +51,7 @@ MonoBehaviour:
   meshFilter: {fileID: 927027147997757784}
   meshCollider: {fileID: 4209895817122745828}
   noiseGenerator: {fileID: 0}
-  lod: 4
+  lod: 5
 --- !u!33 &927027147997757784
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -1,15 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class Chunk : MonoBehaviour
 {
     // This class is responsible for generating and creating the terrain mesh
-    
+
     public ComputeShader marchingShader;
-    
+
     public MeshFilter meshFilter;
     public MeshCollider meshCollider;
 
@@ -17,15 +18,17 @@ public class Chunk : MonoBehaviour
     private ComputeBuffer _trianglesBuffer;
     private ComputeBuffer _trianglesCountBuffer;
     private ComputeBuffer _weightsBuffer;
-    
+
     private float[] _weights;
 
     public NoiseGenerator noiseGenerator;
+
+    [Range(0, 5)] public int lod;
+    private int _prevLod;
+
+    private int _interval = 3;
     
-    [Range(0, 5)]
-    public int lod;
-    
-    private struct Triangle 
+    private struct Triangle
     {
         public Vector3 A;
         public Vector3 B;
@@ -35,18 +38,32 @@ public class Chunk : MonoBehaviour
         public static int SizeOf => sizeof(float) * 3 * 3;
     }
 
-    private void Start() 
+    private void Start()
     {
         Create();
+
+        _prevLod = lod;
     }
     
-    // private void OnValidate() 
-    // {
-    //     if (Application.isPlaying) 
-    //     {
-    //         Create();
-    //     }
-    // }
+    private void Update()
+    {
+        if (Time.frameCount % _interval == 0)
+        {
+            if (_prevLod != lod)
+            {
+                Create();
+                _prevLod = lod;
+            }
+        }
+    }
+
+    private void OnValidate()
+    {
+        if (Application.isPlaying)
+        {
+            Create();
+        }
+    }
 
     private void Create()
     {
@@ -55,7 +72,7 @@ public class Chunk : MonoBehaviour
         UpdateMesh();
         ReleaseBuffers();
     }
-    
+
     private void UpdateMesh()
     {
         Mesh mesh = ConstructMesh();
@@ -70,7 +87,7 @@ public class Chunk : MonoBehaviour
         // We are using a new kernel (method/function) in our compute shader to do this.
         // With the .FindKernel("name") method we can find the index of the kernel in our compute shader.
         int kernel = marchingShader.FindKernel("update_weights");
-        
+
         _weightsBuffer.SetData(_weights);
         marchingShader.SetBuffer(kernel, $"weights", _weightsBuffer);
 
@@ -81,9 +98,9 @@ public class Chunk : MonoBehaviour
         marchingShader.SetInt($"scale", GridMetrics.Scale);
 
         marchingShader.Dispatch(
-            kernel, 
-            GridMetrics.ThreadGroups(GridMetrics.LastLod), 
-            GridMetrics.ThreadGroups(GridMetrics.LastLod), 
+            kernel,
+            GridMetrics.ThreadGroups(GridMetrics.LastLod),
+            GridMetrics.ThreadGroups(GridMetrics.LastLod),
             GridMetrics.ThreadGroups(GridMetrics.LastLod)
         );
 
@@ -92,7 +109,7 @@ public class Chunk : MonoBehaviour
         UpdateMesh();
         ReleaseBuffers();
     }
-    
+
     private Mesh ConstructMesh()
     {
         int kernel = marchingShader.FindKernel("march");
@@ -111,16 +128,17 @@ public class Chunk : MonoBehaviour
 
         _weightsBuffer.SetData(_weights);
         _trianglesBuffer.SetCounterValue(0);
-        
-        marchingShader.Dispatch(kernel, GridMetrics.ThreadGroups(lod), GridMetrics.ThreadGroups(lod), GridMetrics.ThreadGroups(lod));
+
+        marchingShader.Dispatch(kernel, GridMetrics.ThreadGroups(lod), GridMetrics.ThreadGroups(lod),
+            GridMetrics.ThreadGroups(lod));
 
         Triangle[] triangles = new Triangle[ReadTriangleCount()];
         _trianglesBuffer.GetData(triangles);
 
         return CreateMeshFromTriangles(triangles);
     }
-    
-    private int ReadTriangleCount() 
+
+    private int ReadTriangleCount()
     {
         int[] triCount = { 0 };
         ComputeBuffer.CopyCount(_trianglesBuffer, _trianglesCountBuffer, 0);
@@ -128,12 +146,13 @@ public class Chunk : MonoBehaviour
         return triCount[0];
     }
 
-    private static Mesh CreateMeshFromTriangles(Triangle[] triangles) 
+    private static Mesh CreateMeshFromTriangles(Triangle[] triangles)
     {
         Vector3[] verts = new Vector3[triangles.Length * 3];
         int[] tris = new int[triangles.Length * 3];
 
-        for (int i = 0; i < triangles.Length; i++) {
+        for (int i = 0; i < triangles.Length; i++)
+        {
             int startIndex = i * 3;
 
             verts[startIndex] = triangles[i].A;
@@ -151,25 +170,25 @@ public class Chunk : MonoBehaviour
         mesh.RecalculateNormals();
         return mesh;
     }
-    
-    private void CreateBuffers() 
+
+    private void CreateBuffers()
     {
         _trianglesBuffer = new ComputeBuffer(
-            5 * (GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod)), 
+            5 * (GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod) * GridMetrics.PointsPerChunk(lod)),
             Triangle.SizeOf, ComputeBufferType.Append
-            );
-        
+        );
+
         _trianglesCountBuffer = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Raw);
-        
+
         _weightsBuffer = new ComputeBuffer(
-            GridMetrics.PointsPerChunk(GridMetrics.LastLod) * 
-            GridMetrics.PointsPerChunk(GridMetrics.LastLod) * 
-            GridMetrics.PointsPerChunk(GridMetrics.LastLod), 
+            GridMetrics.PointsPerChunk(GridMetrics.LastLod) *
+            GridMetrics.PointsPerChunk(GridMetrics.LastLod) *
+            GridMetrics.PointsPerChunk(GridMetrics.LastLod),
             sizeof(float)
-            );
+        );
     }
 
-    private void ReleaseBuffers() 
+    private void ReleaseBuffers()
     {
         _trianglesBuffer.Release();
         _trianglesCountBuffer.Release();
