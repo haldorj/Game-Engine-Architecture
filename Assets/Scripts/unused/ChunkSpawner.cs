@@ -6,7 +6,7 @@ public class ChunkSpawner : MonoBehaviour
 {
     public Chunk chunk; // Reference to your chunk prefab
     public NoiseGenerator noiseGenerator;
-    private const int Iterations = 12; // Number of iterations for the grid
+    private const int Iterations = 2; // Number of iterations for the grid
     private readonly float _distance = GridMetrics.Scale;  // Distance between chunks
 
     [SerializeField] private Transform playerTransform;
@@ -41,10 +41,15 @@ public class ChunkSpawner : MonoBehaviour
 
     private void UpdateChunks()
     {
+        Vector3 playerToCamera = playerTransform.position - Camera.main.transform.position;
+        Vector3 cameraForward = Camera.main.transform.forward;
+        
         foreach (Transform child in transform)
         {
+            Vector3 chunkToPlayer = child.position - playerTransform.position;
+            
             float distance = Vector3.Distance(child.position, playerTransform.position);
-            if (distance > 150)
+            if (distance > 250 || Vector3.Dot(chunkToPlayer, playerToCamera) < -150)
             {
                 child.gameObject.SetActive(false);
             }

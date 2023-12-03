@@ -27,15 +27,9 @@ public class Chunk : MonoBehaviour
     private int _prevLod;
 
     private int _interval = 3;
+    public static Gradient gradient;
     
-    private ObjectPool _pool;
-    public ObjectPool Pool { get => _pool; set => _pool = value; }
-    
-    public void Release()
-    {
-        _pool.ReturnToPool(this);
-    }
-    
+
     private struct Triangle
     {
         public Vector3 A;
@@ -176,6 +170,14 @@ public class Chunk : MonoBehaviour
         mesh.vertices = verts;
         mesh.triangles = tris;
         mesh.RecalculateNormals();
+        
+        mesh.colors = new Color[verts.Length];
+        for (int i = 0; i < verts.Length; i++)
+        {
+            float height = Mathf.InverseLerp(-32, 32, mesh.vertices[i].y);
+            mesh.colors[i] = gradient.Evaluate(height);
+        }
+        
         return mesh;
     }
 
