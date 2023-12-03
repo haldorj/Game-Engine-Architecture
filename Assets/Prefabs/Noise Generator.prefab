@@ -46,10 +46,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseShader: {fileID: 7200000, guid: 4e36d11f7aca63f4581324db223e7676, type: 3}
   initialX: 12
+  initialY: 1
   initialZ: 12
-  amplitude: 20
-  frequency: 0.01
+  amplitude: 32
+  frequency: 0.012
   octaves: 8
-  hardFloor: 32
-  terraceHeight: 4
-  groundPercent: 0.1
+  hardFloor: 1
+  terraceHeight: 7
+  groundPercent: 0

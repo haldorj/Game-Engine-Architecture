@@ -15,6 +15,7 @@ public class NoiseGenerator : MonoBehaviour
     public ComputeShader noiseShader;
     
     public int initialX;
+    public int initialY;
     public int initialZ;
     
     [SerializeField] private float amplitude = 10;
@@ -44,6 +45,7 @@ public class NoiseGenerator : MonoBehaviour
         noiseShader.SetInt($"scale", GridMetrics.Scale);
         noiseShader.SetInt($"ground_level", GridMetrics.GroundLevel);
         noiseShader.SetInt($"initial_x", initialX);
+        noiseShader.SetInt($"initial_y", initialY);
         noiseShader.SetInt($"initial_z", initialZ);
         
         // Dispatch shader, with one kernel (index 0), and (GridMetrics.PointsPerChunk/GridMetrics.NumThreads)

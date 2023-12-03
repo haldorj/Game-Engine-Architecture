@@ -20,8 +20,6 @@ public class SubController : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-
-        transform.position = new Vector3(GridMetrics.Scale / 2, GridMetrics.Scale / 2, GridMetrics.Scale / 2);
     }
 
     private void FixedUpdate()

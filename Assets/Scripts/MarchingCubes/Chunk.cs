@@ -28,6 +28,14 @@ public class Chunk : MonoBehaviour
 
     private int _interval = 3;
     
+    private ObjectPool _pool;
+    public ObjectPool Pool { get => _pool; set => _pool = value; }
+    
+    public void Release()
+    {
+        _pool.ReturnToPool(this);
+    }
+    
     private struct Triangle
     {
         public Vector3 A;

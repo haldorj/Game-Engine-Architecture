@@ -13,9 +13,21 @@ public class ChunkSpawner : MonoBehaviour
 
     private int _interval = 3;
     
+    private Camera _mainCamera;
+    
     void Start()
     {
-        SpawnChunks();
+        _mainCamera = Camera.main;
+
+        if (_mainCamera == null)
+        {
+            Debug.LogError("Main camera not found!");
+        }
+        
+        for (int height = 0; height <= 1; height++)
+        {
+            SpawnChunksInPlane(height);
+        }
     }
 
     private void Update()
@@ -32,7 +44,7 @@ public class ChunkSpawner : MonoBehaviour
         foreach (Transform child in transform)
         {
             float distance = Vector3.Distance(child.position, playerTransform.position);
-            if (distance > 400)
+            if (distance > 150)
             {
                 child.gameObject.SetActive(false);
             }
@@ -79,17 +91,18 @@ public class ChunkSpawner : MonoBehaviour
         }
     }
 
-    void SpawnChunks()
+    void SpawnChunksInPlane(int height)
     {
         for (int x = -Iterations; x <= Iterations; x++)
         {
             for (int z = -Iterations; z <= Iterations; z++)
             {
-                Vector3 spawnPosition = new Vector3(x * _distance, 0.0f, z * _distance);
+                Vector3 spawnPosition = new Vector3(x * _distance, + height * _distance, z * _distance);
                 
                 Quaternion spawnRotation = Quaternion.identity;
 
                 noiseGenerator.initialX = x;
+                noiseGenerator.initialY = height;
                 noiseGenerator.initialZ = z;
                 
                 GameObject spawnedNoise = Instantiate(noiseGenerator.gameObject, 
@@ -105,6 +118,4 @@ public class ChunkSpawner : MonoBehaviour
             }
         }
     }
-    
-    
 }
