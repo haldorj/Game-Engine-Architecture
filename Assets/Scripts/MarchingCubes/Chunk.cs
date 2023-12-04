@@ -171,12 +171,12 @@ public class Chunk : MonoBehaviour
         mesh.triangles = tris;
         mesh.RecalculateNormals();
         
-        mesh.colors = new Color[verts.Length];
-        for (int i = 0; i < verts.Length; i++)
-        {
-            float height = Mathf.InverseLerp(-32, 32, mesh.vertices[i].y);
-            mesh.colors[i] = gradient.Evaluate(height);
-        }
+        // mesh.colors = new Color[verts.Length];
+        // for (int i = 0; i < verts.Length; i++)
+        // {
+        //     float height = Mathf.InverseLerp(-32, 32, mesh.vertices[i].y);
+        //     mesh.colors[i] = gradient.Evaluate(height);
+        // }
         
         return mesh;
     }
