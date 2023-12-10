@@ -289,6 +289,63 @@ MonoBehaviour:
   target: {fileID: 1490553583}
   moveSmoothing: 0.6
   rotationSmoothing: 0.2
+--- !u!1 &389815431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 389815433}
+  - component: {fileID: 389815432}
+  m_Layer: 0
+  m_Name: FlockManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &389815432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389815431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6f4943f6bd4dc84880dbf214f4f0b2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boidPrefab: {fileID: 1733855665772604, guid: b0489fdb6d64a4a4ba8e194e561d60cd, type: 3}
+  secondBoidPrefab: {fileID: 1318662798089844, guid: 06a4036ceebb544e494c30d599b9d2c1,
+    type: 3}
+  goalPrefab: {fileID: 5679533674103152456, guid: 530f527c02532d9478586b90a83e6e61,
+    type: 3}
+  numBoids: 150
+  boids: []
+  limits: {x: 13.14, y: 7, z: 12.22}
+  goalPos: {x: 0, y: 0, z: 0}
+  minSpeed: 4
+  maxSpeed: 8
+  neighbourDistance: 6
+  rotationSpeed: 3
+--- !u!4 &389815433
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389815431}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.5, z: 8.91}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1490553583}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &929857165
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,12 +423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1928116f4b294abc7b38c4e75ec8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initPoolSize: 9
-  chunkPrefab: {fileID: 9155412679707273326, guid: c24e4837e53c05b418ca391f062857f0,
-    type: 3}
-  noiseGeneratorPrefab: {fileID: 2695936693803748682, guid: 6293d49151a0bb348884a31196d600c5,
-    type: 3}
-  playerTransform: {fileID: 1490553583}
 --- !u!4 &1193177686
 Transform:
   m_ObjectHideFlags: 0
@@ -466,6 +517,7 @@ Transform:
   - {fileID: 2060812128}
   - {fileID: 1656915586}
   - {fileID: 373772060}
+  - {fileID: 389815433}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1514061057

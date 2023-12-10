@@ -328,7 +328,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 15, y: 4.92, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -410,13 +410,13 @@ MonoBehaviour:
   boidPrefab: {fileID: 1318662798089844, guid: 06a4036ceebb544e494c30d599b9d2c1, type: 3}
   goalPrefab: {fileID: 5679533674103152456, guid: 530f527c02532d9478586b90a83e6e61,
     type: 3}
-  numBoids: 40
+  numBoids: 100
   boids: []
-  swimLimits: {x: 5, y: 5, z: 5}
+  limits: {x: 5, y: 5, z: 5}
   goalPos: {x: 0, y: 0, z: 0}
-  minSpeed: 1
-  maxSpeed: 2.5
-  neighbourDistance: 5
+  minSpeed: 0.5
+  maxSpeed: 1.5
+  neighbourDistance: 1.81
   rotationSpeed: 2
 --- !u!4 &1886497908
 Transform:
@@ -427,7 +427,7 @@ Transform:
   m_GameObject: {fileID: 1886497906}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 15, y: 3.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -19,7 +19,7 @@ public class Boid : MonoBehaviour
 
         if (!b.Contains(transform.position))
         {
-            Vector3 direction = FlockManager.instance.transform.position - transform.position;
+            Vector3 direction = FlockManager.instance.goalPos - transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation,
                 Quaternion.LookRotation(direction),
                 FlockManager.instance.rotationSpeed * Time.deltaTime);
@@ -29,10 +29,14 @@ public class Boid : MonoBehaviour
             // Reset speed
             if (UnityEngine.Random.Range(0, 1000) < 50)
                 _speed = UnityEngine.Random.Range(FlockManager.instance.minSpeed, FlockManager.instance.maxSpeed);
-            
-            ApplyRules();
+
+            if ( UnityEngine.Random.Range(0, 10000) < 200)
+            {
+                ApplyRules();
+            }
         }
-        
+
+        AvoidColliders();
         transform.Translate(Vector3.forward * (_speed * Time.deltaTime));
     }
     
@@ -89,5 +93,32 @@ public class Boid : MonoBehaviour
                     FlockManager.instance.rotationSpeed * Time.deltaTime);
             }
         }
+    }
+
+    void AvoidColliders()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 5.0f);
+        if (colliders.Length > 0)
+        {
+            Vector3 direction = Vector3.zero;
+            foreach (Collider c in colliders)
+            {
+                if (c.gameObject == gameObject) continue;
+                direction += (transform.position - c.transform.position);
+            }
+
+            if (direction != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(direction),
+                    FlockManager.instance.rotationSpeed * Time.deltaTime);
+            }
+        }
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 1.5f);
     }
 }
