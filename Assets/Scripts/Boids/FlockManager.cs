@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class FlockManager : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class FlockManager : MonoBehaviour
     private GameObject _goal;
     public int numBoids = 20;
     public GameObject[] boids;
-    public Vector3 swimLimits = new Vector3(5, 5, 5);
+    public Vector3 limits = new(5, 5, 5);
     public Vector3 goalPos = Vector3.zero;
 
     [Header("Boid Settings")]
@@ -28,9 +29,9 @@ public class FlockManager : MonoBehaviour
         for (int i = 0; i < numBoids; i++)
         {
             Vector3 pos = new Vector3(
-                UnityEngine.Random.Range(-swimLimits.x, swimLimits.x),
-                UnityEngine.Random.Range(-swimLimits.y, swimLimits.y),
-                UnityEngine.Random.Range(-swimLimits.z, swimLimits.z)
+                UnityEngine.Random.Range(-limits.x, limits.x),
+                UnityEngine.Random.Range(-limits.y, limits.y),
+                UnityEngine.Random.Range(-limits.z, limits.z)
             );
             boids[i] = Instantiate(boidPrefab, pos, Quaternion.identity);
             //boids[i].GetComponent<Boid>().flockManager = this;
@@ -43,7 +44,7 @@ public class FlockManager : MonoBehaviour
     
     private void Update()
     {
-        if (UnityEngine.Random.Range(0, 10000) < 50)
+        if (UnityEngine.Random.Range(0, 10000) < 10)
         {
             goalPos = GetRandomGoalPos();
             _goal.transform.position = goalPos;
@@ -53,9 +54,9 @@ public class FlockManager : MonoBehaviour
     Vector3 GetRandomGoalPos()
     {
         Vector3 pos = new Vector3(
-            UnityEngine.Random.Range(-swimLimits.x, swimLimits.x),
-            UnityEngine.Random.Range(-swimLimits.y, swimLimits.y),
-            UnityEngine.Random.Range(-swimLimits.z, swimLimits.z)
+            UnityEngine.Random.Range(-limits.x, limits.x),
+            UnityEngine.Random.Range(-limits.y, limits.y),
+            UnityEngine.Random.Range(-limits.z, limits.z)
         );
         return pos;
     }

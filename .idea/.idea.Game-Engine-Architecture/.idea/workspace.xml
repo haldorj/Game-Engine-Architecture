@@ -2,10 +2,52 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a5fb32d-4bcd-4e0a-be4a-87149703cf5f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/New Material.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/New Material.mat.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/SolarPanel.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/SolarPanel.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Sun.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Sun/Point Light.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Sun/Point Light.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Sun/Trail.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Sun/Trail.mat.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Sun/Trail.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefabs/Sun/Trail.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/Particles.unity" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/Particles.unity.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/Programming Patterns.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/Programming Patterns/StatePattern.unity" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/Programming Patterns/StatePattern.unity.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/SimulateSun.unity" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scenes/SimulateSun.unity.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/FactoryPattern.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/FactoryPattern/FactoryA.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/FactoryPattern/FactoryA.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/FactoryPattern/FactoryPattern.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/FactoryPattern/FactoryPattern.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/IState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/IState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/StateMachine.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/StateMachine.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/States.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/States/GreenState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/States/GreenState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/States/RedState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/States/RedState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/States/YellowState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/States/YellowState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Sun.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Sun/SolarPanel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Sun/SolarPanel.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Sun/Sun.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Sun/Sun.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Game-Engine-Architecture/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Game-Engine-Architecture/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MarchingCubes.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MarchingCubes.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Wheel.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Wheel.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Boids/Boid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Boids/Boid.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Boids/FlockManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Boids/FlockManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PathFinding/TestObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PathFinding/TestObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +58,9 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MarchingCubes/ChunkSpawner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PathFinding/TestObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PathFinding/TrafficLightManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/FactoryPattern/FactoryA.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ProgrammingPatterns/State/StateMachine.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Sun/SolarPanel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e97d84204f8d4aef92b538c5bab948f1172800/fc/dd164898/Component.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -91,7 +136,13 @@
       <workItem from="1696495062766" duration="752000" />
       <workItem from="1696495901177" duration="1729000" />
       <workItem from="1696504792286" duration="786000" />
-      <workItem from="1696578064277" duration="4035000" />
+      <workItem from="1696578064277" duration="5309000" />
+      <workItem from="1697794768002" duration="1079000" />
+      <workItem from="1698344766308" duration="5677000" />
+      <workItem from="1698937305758" duration="2052000" />
+      <workItem from="1699001451933" duration="3737000" />
+      <workItem from="1702026983626" duration="1243000" />
+      <workItem from="1702178638872" duration="343000" />
     </task>
     <servers />
   </component>

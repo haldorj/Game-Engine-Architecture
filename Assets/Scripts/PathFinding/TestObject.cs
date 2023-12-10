@@ -15,5 +15,4 @@ public class TestObject : ScriptableObject
         pos = new Vector3(p.x, p.y, p.z);
         Debug.Log("Player :" + this.name + "placed at :"+ pos);
     }
-
 }

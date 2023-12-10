@@ -15,7 +15,7 @@ public class Boid : MonoBehaviour
     
     private void Update()
     {
-        Bounds b = new Bounds(FlockManager.instance.transform.position, FlockManager.instance.swimLimits * 2);
+        Bounds b = new Bounds(FlockManager.instance.transform.position, FlockManager.instance.limits * 2);
 
         if (!b.Contains(transform.position))
         {
