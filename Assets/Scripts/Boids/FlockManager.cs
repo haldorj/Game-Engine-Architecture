@@ -54,7 +54,6 @@ public class FlockManager : MonoBehaviour
     
     private void Update()
     {
-        
         if ( UnityEngine.Random.Range(0, 10000) < 200)
         {
             goalPos = GetRandomGoalPos() + transform.position;
