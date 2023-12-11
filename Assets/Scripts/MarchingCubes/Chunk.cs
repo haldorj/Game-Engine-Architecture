@@ -102,7 +102,7 @@ public class Chunk : MonoBehaviour
             int index = UnityEngine.Random.Range(0, objects.Length);
             GameObject obj = Instantiate(objects[index], worldPos, rot);
             obj.transform.RotateAround(obj.transform.position, obj.transform.up, UnityEngine.Random.Range(0, 180));
-            obj.transform.localScale = Vector3.one * UnityEngine.Random.Range(0.5f, 3f);
+            obj.transform.localScale = Vector3.one * UnityEngine.Random.Range(0.5f, 1.5f);
             obj.transform.parent = transform;
         }
     }
