@@ -52,6 +52,10 @@ MonoBehaviour:
   meshCollider: {fileID: 4209895817122745828}
   noiseGenerator: {fileID: 0}
   lod: 5
+  objects:
+  - {fileID: 6627981795322895491, guid: 45f1aec95d50f184cba72467ec7d9fdd, type: 3}
+  - {fileID: 6627981795322895491, guid: 4f56d976c7d9dc54c87e92920cf0a301, type: 3}
+  - {fileID: 6627981795322895491, guid: 117a9035c893955428f1e5613cf6dc08, type: 3}
 --- !u!33 &927027147997757784
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -80,7 +84,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b7db38eca9b3fba42b8739016376f60f, type: 2}
+  - {fileID: 2100000, guid: 7a388845caed7844c9c3eca96554e594, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

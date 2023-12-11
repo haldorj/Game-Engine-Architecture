@@ -27,9 +27,12 @@ public class Chunk : MonoBehaviour
     private int _prevLod;
 
     private int _interval = 3;
-    public static Gradient gradient;
     
+    public GameObject[] objects;
 
+    // [SerializeField] private Color[] colors;
+    // public Gradient gradient;
+    
     private struct Triangle
     {
         public Vector3 A;
@@ -43,10 +46,10 @@ public class Chunk : MonoBehaviour
     private void Start()
     {
         Create();
-
         _prevLod = lod;
+        SpawnObjectsOnSurface();
     }
-    
+
     private void Update()
     {
         if (Time.frameCount % _interval == 0)
@@ -54,6 +57,7 @@ public class Chunk : MonoBehaviour
             if (_prevLod != lod)
             {
                 Create();
+
                 _prevLod = lod;
             }
         }
@@ -73,6 +77,34 @@ public class Chunk : MonoBehaviour
         _weights ??= noiseGenerator.GetNoise(GridMetrics.LastLod);
         UpdateMesh();
         ReleaseBuffers();
+    }
+
+    private void SpawnObjectsOnSurface()
+    {
+        for (int i = 0; i < 13; i++)
+        {
+            Vector3 pos = new Vector3(
+                UnityEngine.Random.Range(-GridMetrics.Scale / 2 + noiseGenerator.initialX * GridMetrics.Scale, 
+                    GridMetrics.Scale / 2 + noiseGenerator.initialX * GridMetrics.Scale),
+                UnityEngine.Random.Range(-GridMetrics.Scale / 2 + noiseGenerator.initialY * 
+                    GridMetrics.Scale, GridMetrics.Scale / 2 + noiseGenerator.initialY * GridMetrics.Scale),
+                UnityEngine.Random.Range(-GridMetrics.Scale / 2 + noiseGenerator.initialZ * GridMetrics.Scale, 
+                    GridMetrics.Scale / 2 + noiseGenerator.initialZ * GridMetrics.Scale)
+            );
+
+            Ray ray = new Ray(pos + Vector3.up * 20, Vector3.down);
+            if (!Physics.Raycast(ray, out RaycastHit hit, GridMetrics.Scale)) continue;
+            
+            hit.normal = hit.normal.normalized;
+            Quaternion rot = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            Vector3 worldPos = hit.point;
+            
+            int index = UnityEngine.Random.Range(0, objects.Length);
+            GameObject obj = Instantiate(objects[index], worldPos, rot);
+            obj.transform.RotateAround(obj.transform.position, obj.transform.up, UnityEngine.Random.Range(0, 180));
+            obj.transform.localScale = Vector3.one * UnityEngine.Random.Range(0.5f, 3f);
+            obj.transform.parent = transform;
+        }
     }
 
     private void UpdateMesh()
@@ -170,14 +202,7 @@ public class Chunk : MonoBehaviour
         mesh.vertices = verts;
         mesh.triangles = tris;
         mesh.RecalculateNormals();
-        
-        // mesh.colors = new Color[verts.Length];
-        // for (int i = 0; i < verts.Length; i++)
-        // {
-        //     float height = Mathf.InverseLerp(-32, 32, mesh.vertices[i].y);
-        //     mesh.colors[i] = gradient.Evaluate(height);
-        // }
-        
+
         return mesh;
     }
 

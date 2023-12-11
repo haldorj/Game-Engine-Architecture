@@ -6,7 +6,7 @@ public class ChunkSpawner : MonoBehaviour
 {
     public Chunk chunk; // Reference to your chunk prefab
     public NoiseGenerator noiseGenerator;
-    private const int Iterations = 12; // Number of iterations for the grid
+    private const int Iterations = 8; // Number of iterations for the grid
     private readonly float _distance = GridMetrics.Scale;  // Distance between chunks
 
     [SerializeField] private Transform playerTransform;
@@ -34,8 +34,8 @@ public class ChunkSpawner : MonoBehaviour
     {
         if (Time.frameCount % _interval == 0)
         {
-            UpdateChunks();
-            UpdateChunkLOD();
+            //UpdateChunks();
+            //UpdateChunkLOD();
         }
     }
 
