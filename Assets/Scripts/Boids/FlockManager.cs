@@ -1,11 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Properties;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Random = System.Random;
 
 public class FlockManager : MonoBehaviour
 {
@@ -39,7 +32,7 @@ public class FlockManager : MonoBehaviour
             GameObject prefab = UnityEngine.Random.Range(0, 100) < 50 ? boidPrefab : secondBoidPrefab;
             
             boids[i] = Instantiate(prefab, pos + transform.position, Quaternion.identity);
-            //boids[i].GetComponent<Boid>().flockManager = this;
+            boids[i].transform.parent = transform;
         }
         instance = this;
         

@@ -8,6 +8,7 @@ public class SubController : MonoBehaviour
     // Controller class which simulates submarine movement:
     // Moving, Turning, Rising/Sinking, Stabilizing (will always default back to an upright position)
     
+    public static SubController instance; // Singleton instance
     private Rigidbody _rigidbody;
     private float _currentSpeed;
     public float maxSpeed;
@@ -16,10 +17,13 @@ public class SubController : MonoBehaviour
     public float turnSpeed;
     public float riseSpeed;
     public float stabilizationSmoothing;
+    
+    public float CurrentSpeed => _currentSpeed;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        instance = this;
     }
 
     private void FixedUpdate()
@@ -30,10 +34,10 @@ public class SubController : MonoBehaviour
         Stabilize();
     }
     
-    public Vector3 GetPosition()
-    {
-        return transform.position;
-    }
+    // public Vector3 GetPosition()
+    // {
+    //     return transform.position;
+    // }
 
     private void Move()
     {
