@@ -33,11 +33,6 @@ public class SubController : MonoBehaviour
         Rise();
         Stabilize();
     }
-    
-    // public Vector3 GetPosition()
-    // {
-    //     return transform.position;
-    // }
 
     private void Move()
     {

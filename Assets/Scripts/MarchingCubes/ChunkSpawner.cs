@@ -34,7 +34,7 @@ public class ChunkSpawner : MonoBehaviour
     private void Update()
     {
         _timer += Time.deltaTime;
-        if (_timer >= 1)
+        if (_timer >= 1.2)
         {
             UpdateChunks();
             UpdateChunkLOD();

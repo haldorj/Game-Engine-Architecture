@@ -40,7 +40,7 @@ public class Boid : MonoBehaviour
     {
         GameObject[] boids = FlockManager.instance.boids; // get all boids
         Vector3 center = Vector3.zero; // center of the group
-        Vector3 avoid = Vector3.zero; // avoid collision
+        Vector3 separation = Vector3.zero; // separation vector
         float groupSpeed = 0.1f; // speed of the group
 
         Vector3 goalPos = FlockManager.instance.goalPos; // goal position
@@ -63,25 +63,24 @@ public class Boid : MonoBehaviour
                 if (dist < 1.0f) 
                 {
                     // add position of boid to avoid vector
-                    avoid += (transform.position - boid.transform.position);
+                    separation += transform.position - boid.transform.position;
                 }
                 // get speed of boid and add to group speed
                 Boid anotherBoid = boid.GetComponent<Boid>();
                 groupSpeed += anotherBoid._speed;
             }
         }
-
-        // if group size is greater than 0
+        
         if (groupSize > 0)
         {
-            // calculate center and speed of group and add goal position to center and speed of group
+            // calculate center of group add direction of group.
             center = center / groupSize + (goalPos - transform.position);
             _speed = groupSpeed / groupSize;
             
             _speed = Mathf.Clamp(_speed, FlockManager.instance.minSpeed, FlockManager.instance.maxSpeed);
 
             // calculate direction of group and rotate towards it
-            Vector3 direction = (center + avoid) - transform.position;
+            Vector3 direction = (center + separation) - transform.position;
             if (direction != Vector3.zero)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation,
@@ -97,14 +96,18 @@ public class Boid : MonoBehaviour
         if (colliders.Length > 0)
         {
             Vector3 direction = Vector3.zero;
+            // foreach collider
             foreach (Collider c in colliders)
             {
+                // if self: skip
                 if (c.gameObject == gameObject) continue;
+                // add distance from collider to self to direction
                 direction += (transform.position - c.transform.position);
             }
 
             if (direction != Vector3.zero)
             {
+                // rotate towards direction
                 transform.rotation = Quaternion.Slerp(transform.rotation,
                     Quaternion.LookRotation(direction),
                     FlockManager.instance.rotationSpeed * Time.deltaTime);

@@ -48,7 +48,8 @@ public class NoiseGenerator : MonoBehaviour
         noiseShader.SetInt($"initial_y", initialY);
         noiseShader.SetInt($"initial_z", initialZ);
         
-        // Dispatch shader, with one kernel (index 0), and (GridMetrics.PointsPerChunk/GridMetrics.NumThreads)
+        // Dispatch shader, with one kernel (index 0), and
+        // (GridMetrics.PointsPerChunk/GridMetrics.NumThreads)
         // workgroups for each dimension to create 3d a grid
         noiseShader.Dispatch(
             0, 
