@@ -6,12 +6,12 @@ public class ChunkSpawner : MonoBehaviour
 {
     public Chunk chunk; // Reference to your chunk prefab
     public NoiseGenerator noiseGenerator;
-    private const int Iterations = 8; // Number of iterations for the grid
+    private const int Iterations = 16; // Number of iterations for the grid
     private readonly float _distance = GridMetrics.Scale;  // Distance between chunks
 
     [SerializeField] private Transform playerTransform;
 
-    private int _interval = 3;
+    private float _timer;
     
     private Camera _mainCamera;
     
@@ -28,14 +28,17 @@ public class ChunkSpawner : MonoBehaviour
         {
             SpawnChunksInPlane(height);
         }
+        UpdateChunkLOD();
     }
 
     private void Update()
     {
-        if (Time.frameCount % _interval == 0)
+        _timer += Time.deltaTime;
+        if (_timer >= 1)
         {
-            //UpdateChunks();
-            //UpdateChunkLOD();
+            UpdateChunks();
+            UpdateChunkLOD();
+            _timer = 0;
         }
     }
 
@@ -111,8 +114,8 @@ public class ChunkSpawner : MonoBehaviour
                 
                 GameObject spawnedNoise = Instantiate(noiseGenerator.gameObject, 
                     spawnPosition, spawnRotation);
-                
-                
+
+                chunk.lod = 0; // improves loading time
                 chunk.noiseGenerator = spawnedNoise.GetComponent<NoiseGenerator>();
                 GameObject spawnedChunk = Instantiate(chunk.GameObject(), 
                     spawnPosition, spawnRotation);
