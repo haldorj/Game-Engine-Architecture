@@ -7,6 +7,13 @@ public class RotatorEngine : MonoBehaviour
     public float multiplier = 10;
     
     public new ParticleSystem particleSystem;
+    
+    AudioSource _audioSource;
+
+    private void Start()
+    {
+        _audioSource = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -21,6 +28,12 @@ public class RotatorEngine : MonoBehaviour
         {
             var emission = particleSystem.emission;
             emission.rateOverTime = Mathf.Abs(SubController.instance.CurrentSpeed * 2);
+        }
+        
+        // Play sound
+        if (_audioSource)
+        {
+            _audioSource.pitch = Mathf.Abs(SubController.instance.CurrentSpeed) / 50;
         }
     }
 }
