@@ -1,9 +1,15 @@
 Submarine Movement Controls:
+
 W - forward
+
 S - backward
+
 A - turn left
+
 D - turn right
+
 Left Ctrl - Descend
+
 Space/Shift - Ascend
 
 About the project:
