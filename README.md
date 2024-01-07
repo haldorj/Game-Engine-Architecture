@@ -1,4 +1,4 @@
-#About the project:
+About the project:
 
 The project is an interactive simulation that allows the user to control a submarine and explore an underwater world.
 The scene of the project: MainScene can be found in assets/scenes.
